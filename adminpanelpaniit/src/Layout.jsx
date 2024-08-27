@@ -2,18 +2,23 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CgMenuRightAlt } from "react-icons/cg";
 import mainlogo from "./Images/mainlogo.png";
-import programiconwhite from "./icons/program-creation-white.png";
-import programiconblue from "./icons/programcreation-blue.png";
-import accounticonwhite from "./icons/accountmanagement-white.png";
-import accounticonblue from "./icons/accountmanagement-blue.png";
-import teachericonwhite from "./icons/teacherenrollment-white.png";
-import teahericonblue from "./icons/teacherenrollment-blue.png";
-import studenticonwhite from "./icons/student-enrollment-white.png";
-import studenticonblue from "./icons/studentenrollment-blue.png";
-import selfenrollmenticonwhite from "./icons/selfenrollment-white.png";
-import selfenrollmenticonblack from "./icons/self-enrollment-blue.png";
-import batchmanagementiconwhite from "./icons/batchmanagement-white.png";
-import batchmanagementiconblue from "./icons/batchmanagement-blue.png";
+
+// Import white icons
+import ProgramCreationIconWhite from "./icons/program-creation-white.png";
+import AccountIconWhite from "./icons/accountmanagement-white.png";
+import TeacherIconWhite from "./icons/teacherenrollment-white.png";
+import StudentIconWhite from "./icons/student-enrollment-white.png";
+import SelfEnrollmentIconWhite from "./icons/selfenrollment-white.png";
+import BatchManagementIconWhite from "./icons/batchmanagement-white.png";
+
+// Import blue icons
+import ProgramIconBlue from "./icons/programcreation-blue.png";
+import AccountIconBlue from "./icons/accountmanagement-blue.png";
+import TeacherIconBlue from "./icons/teacherenrollment-blue.png";
+import StudentIconBlue from "./icons/studentenrollment-blue.png";
+import SelfEnrollmentIconBlue from "./icons/self-enrollment-blue.png";
+import BatchManagementIconBlue from "./icons/batchmanagement-blue.png";
+
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
@@ -21,9 +26,14 @@ const Layout = ({ children }) => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const getIcon = (path, whiteIcon, blueIcon) => {
+    return location.pathname === path ? whiteIcon : blueIcon;
+  };
+
   return (
     <div className="layout-container">
-      <header className="header">Header</header>
+      <header className="header"></header>
       <section className="dashboard-content">
         <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
           <CgMenuRightAlt className="toggle-icon" onClick={toggleSidebar} />
@@ -33,50 +43,109 @@ const Layout = ({ children }) => {
               <div className="top-section">
                 <img src={mainlogo} alt="logo" />
               </div>
-              <h2>Menu</h2>
-              <li
-                className={
-                  location.pathname === "/programcreation" ? "active" : ""
-                }
-              >
-                <img src={programiconwhite} className="flex-icon" alt="icon" />
-                <Link to="/programcreation">Program Creation</Link>
-              </li>
-              <li
-                className={
-                  location.pathname === "/accountmanagement" ? "active" : ""
-                }
-              >
-                <Link to="/accountmanagement">Account Management</Link>
-              </li>
-              <li
-                className={
-                  location.pathname === "/teacherenrollment" ? "active" : ""
-                }
-              >
-                <Link to="/teacherenrollment">Teacher Enrollment</Link>
-              </li>
-              <li
-                className={
-                  location.pathname === "/studentenrollment" ? "active" : ""
-                }
-              >
-                <Link to="/studentenrollment">Student Enrollment</Link>
-              </li>
-              <li
-                className={
-                  location.pathname === "/selfenrollname" ? "active" : ""
-                }
-              >
-                <Link to="/selfenrollname">Self Enrollment</Link>
-              </li>
-              <li
-                className={
-                  location.pathname === "/batchmanagement" ? "active" : ""
-                }
-              >
-                <Link to="/batchmanagement">Batch Management</Link>
-              </li>
+              <h1>MENU</h1>
+              <Link to="/programcreation">
+                <li
+                  className={
+                    location.pathname === "/programcreation" ? "active" : ""
+                  }
+                >
+                  <img
+                    src={getIcon(
+                      "/programcreation",
+                      ProgramCreationIconWhite,
+                      ProgramIconBlue
+                    )}
+                    alt="Program Creation Icon"
+                  />
+                  Program Creation
+                </li>
+              </Link>
+              <Link to="/accountmanagement">
+                <li
+                  className={
+                    location.pathname === "/accountmanagement" ? "active" : ""
+                  }
+                >
+                  <img
+                    src={getIcon(
+                      "/accountmanagement",
+                      AccountIconWhite,
+                      AccountIconBlue
+                    )}
+                    alt="Account Management Icon"
+                  />
+                  Account Management
+                </li>
+              </Link>
+              <Link to="/teacherenrollment">
+                <li
+                  className={
+                    location.pathname === "/teacherenrollment" ? "active" : ""
+                  }
+                >
+                  <img
+                    src={getIcon(
+                      "/teacherenrollment",
+                      TeacherIconWhite,
+                      TeacherIconBlue
+                    )}
+                    alt="Teacher Enrollment Icon"
+                  />
+                  Teacher Enrollment
+                </li>
+              </Link>
+              <Link to="/studentenrollment">
+                <li
+                  className={
+                    location.pathname === "/studentenrollment" ? "active" : ""
+                  }
+                >
+                  <img
+                    src={getIcon(
+                      "/studentenrollment",
+                      StudentIconWhite,
+                      StudentIconBlue
+                    )}
+                    alt="Student Enrollment Icon"
+                  />
+                  Student Enrollment
+                </li>
+              </Link>
+              <Link to="/selfenrollname">
+                <li
+                  className={
+                    location.pathname === "/selfenrollname" ? "active" : ""
+                  }
+                >
+                  <img
+                    src={getIcon(
+                      "/selfenrollname",
+                      SelfEnrollmentIconWhite,
+                      SelfEnrollmentIconBlue
+                    )}
+                    alt="Self Enrollment Icon"
+                  />
+                  Self Enrollment
+                </li>
+              </Link>
+              <Link to="/batchmanagement">
+                <li
+                  className={
+                    location.pathname === "/batchmanagement" ? "active" : ""
+                  }
+                >
+                  <img
+                    src={getIcon(
+                      "/batchmanagement",
+                      BatchManagementIconWhite,
+                      BatchManagementIconBlue
+                    )}
+                    alt="Batch Management Icon"
+                  />
+                  Batch Management
+                </li>
+              </Link>
             </ul>
           )}
         </aside>
