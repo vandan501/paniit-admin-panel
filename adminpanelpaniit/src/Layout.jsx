@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CgMenuRightAlt } from "react-icons/cg";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import mainlogo from "./Images/mainlogo.png";
 
 // Import white icons
@@ -21,7 +22,12 @@ import BatchManagementIconBlue from "./icons/batchmanagement-blue.png";
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -33,7 +39,27 @@ const Layout = ({ children }) => {
 
   return (
     <div className="layout-container">
-      <header className="header"></header>
+      <header className="header">
+        <div className="main-header-logo">
+          <Link to={"/targetedpage"}>
+            <img src={mainlogo} alt="paniit-logo" />
+          </Link>
+        </div>
+
+        <div className="superadmin-dropdown">
+          <div className="dropdown-trigger" onClick={toggleDropdown}>
+            Super Admin
+            {isDropdownOpen ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
+          {isDropdownOpen && (
+            <ul className="dropdown-menu">
+              <li>
+                <Link to="/analytics">Analytics</Link>
+              </li>
+            </ul>
+          )}
+        </div>
+      </header>
       <section className="dashboard-content">
         <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
           <CgMenuRightAlt className="toggle-icon" onClick={toggleSidebar} />
