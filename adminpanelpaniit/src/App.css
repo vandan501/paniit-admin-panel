@@ -15,6 +15,7 @@ body {
   position: relative;
   flex-direction: column;
 }
+
 .header {
   width: 100%;
   height: 60px;
@@ -28,9 +29,11 @@ body {
   z-index: 1;
   box-shadow: 0px 4px 4px 0px #00000040;
 }
+
 .header .main-header-logo {
   margin-left: 40px;
 }
+
 .superadmin-dropdown {
   position: relative;
   margin-right: 20px;
@@ -84,6 +87,7 @@ aside.sidebar.open {
   padding-right: 0;
   padding-left: 0;
 }
+
 .dashboard-content {
   display: flex;
   width: 100%;
@@ -94,6 +98,7 @@ aside.sidebar.open {
   position: absolute;
   transition: all 0.3s ease;
 }
+
 svg.toggle-icon {
   position: absolute;
   right: 2px;
@@ -135,21 +140,25 @@ aside.sidebar.open ul {
   padding: 0;
   margin: 0;
 }
+
 aside.sidebar.open ul h2 {
   width: 100%;
 }
+
 .top-section {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .top-section img {
   width: 100px;
   position: relative;
   height: 60px;
   bottom: 5px;
 }
+
 aside.sidebar.open ul li {
   list-style: none;
   width: 95%;
@@ -165,6 +174,7 @@ aside.sidebar.open ul li {
   align-items: center;
   text-decoration: none;
 }
+
 aside.sidebar.open ul h1 {
   font-size: 16px;
   padding: 0;
@@ -175,12 +185,14 @@ aside.sidebar.open ul h1 {
   font-style: normal !important;
   color: #000;
 }
+
 aside.sidebar.open ul a {
   text-decoration: none;
   font-weight: 600;
   font-family: "Montserrat", serif;
   font-style: normal !important;
 }
+
 aside.sidebar.open ul li.active {
   list-style: none;
   width: 95%;
@@ -201,28 +213,33 @@ aside.sidebar.open ul li a {
   text-decoration: none;
   color: #000;
 }
+
 aside.sidebar.open ul li.active a {
   text-decoration: none;
   color: #fff;
 }
 
 /* responsive main-content and sidebar */
-@media (max-width: 700px) {
+@media (max-width: 780px) {
   .layout-container section.dashboard-content {
     position: absolute;
   }
+
   .sidebar.closed {
     width: 0;
     height: 100%;
   }
+
   aside.sidebar.open {
     position: fixed;
     height: 100%;
     font-size: 14px;
+
     * {
       gap: 16px !important;
     }
   }
+
   .layout-container section.dashboard-content .main-content {
     position: relative;
     transition: none !important;
@@ -259,16 +276,19 @@ aside.sidebar.open ul li.active a {
   /* align-items: end; */
   align-items: end;
 }
+
 .main-content .main-section .first-heading-row h1 {
   color: #2e3093;
   font-family: "Montserrat", serif;
   font-style: normal !important;
   font-weight: 500;
   /* font-size: 24px !important; */
-  font-size: clamp(16px, 2.5vw, 24px); /* min, preferred, max */
+  font-size: clamp(16px, 2.5vw, 24px);
+  /* min, preferred, max */
   margin: 0;
   padding: 0;
 }
+
 .main-content .main-section .first-heading-row .right-side-content {
   display: flex;
   width: auto;
@@ -276,11 +296,8 @@ aside.sidebar.open ul li.active a {
   align-items: end;
   gap: 30px;
 }
-.main-content
-  .main-section
-  .first-heading-row
-  .right-side-content
-  .filter-by-row-div {
+
+.main-content .main-section .first-heading-row .right-side-content .filter-by-row-div {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -288,12 +305,8 @@ aside.sidebar.open ul li.active a {
   height: auto;
   /* flex-wrap: wrap; */
 }
-.main-content
-  .main-section
-  .first-heading-row
-  .right-side-content
-  .filter-by-row-div
-  span {
+
+.main-content .main-section .first-heading-row .right-side-content .filter-by-row-div span {
   font-size: 16px;
   padding: 0;
   margin: 0;
@@ -301,50 +314,38 @@ aside.sidebar.open ul li.active a {
   font-family: Montserrat;
 }
 
-.main-content
-  .main-section
-  .first-heading-row
-  .right-side-content
-  .filter-by-row-div
-  select {
+.main-content .main-section .first-heading-row .right-side-content .filter-by-row-div select {
   width: 162px;
   height: 32px;
+  outline: #000;
+  border: 1px solid #000;
   cursor: pointer;
+  background-color: #fff;
   font-family: Montserrat;
 }
-.main-content
-  .main-section
-  .first-heading-row
-  .right-side-content
-  .filter-by-row-div
-  select
-  option {
+
+.main-content .main-section .first-heading-row .right-side-content .filter-by-row-div select option {
   font-size: 12px;
   outline: none;
+  background-color: #fff;
   border: none;
   cursor: pointer;
   font-family: Montserrat;
 }
-.main-content
-  .main-section
-  .first-heading-row
-  .right-side-content
-  .account-management {
+
+.main-content .main-section .first-heading-row .right-side-content .account-management {
   width: auto;
   height: min-content;
   display: flex;
   gap: 15px;
   flex-grow: 1;
 }
-.main-content
-  .main-section
-  .first-heading-row
-  .right-side-content
-  .account-management
-  button {
+
+.main-content .main-section .first-heading-row .right-side-content .account-management button {
   background-color: #2e3093;
   outline: none;
   border: none;
+  text-align: center;
   color: #fff;
   font-family: Montserrat;
   height: 30px;
@@ -353,6 +354,7 @@ aside.sidebar.open ul li.active a {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .main-content .main-section .second-filter-row {
   margin-top: 10px;
   width: 100%;
@@ -367,6 +369,7 @@ aside.sidebar.open ul li.active a {
   align-items: center;
   margin-bottom: 10px;
 }
+
 .main-content .main-section .second-filter-row .search-box {
   display: flex;
   align-items: center;
@@ -378,11 +381,13 @@ aside.sidebar.open ul li.active a {
   color: #7e7e7e;
   font-size: 12px;
 }
+
 .second-filter-row .entries-filter span {
   margin-left: 5px;
   color: #7e7e7e;
   font-size: 12px;
 }
+
 .main-content .main-section .second-filter-row .search-box label {
   margin-right: 5px;
   color: #7e7e7e;
@@ -393,6 +398,7 @@ aside.sidebar.open ul li.active a {
 .search-box input {
   padding: 5px;
   font-size: 14px;
+  background-color: #fff;
 }
 
 @media (max-width: 860px) {
@@ -403,6 +409,7 @@ aside.sidebar.open ul li.active a {
     flex-wrap: wrap;
     gap: 10px;
   }
+
   .first-heading-row .right-side-content {
     width: 100% !important;
     display: flex;
@@ -410,9 +417,11 @@ aside.sidebar.open ul li.active a {
     justify-content: flex-start !important;
     flex-wrap: wrap;
   }
+
   .main-content .main-section .first-heading-row .right-side-content {
     gap: 10px;
   }
+
   .first-heading-row .right-side-content .filter-by-row-div {
     width: auto !important;
     height: min-content;
@@ -427,19 +436,19 @@ aside.sidebar.open ul li.active a {
   justify-content: flex-start;
   align-items: center;
 }
+
 .main-section .data-table-section {
   position: relative;
   overflow: auto;
 }
+
 .main-section .data-table-section .accounttable {
   position: absolute;
   top: 0;
   width: 100%;
 }
 
-.accounttable
-  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation4.tss-11quiee-MUIDataTable-paper.tss-1x5mjc5-MUIDataTable-root.css-11mde6h-MuiPaper-root
-  .MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.tss-tlx3x1-MUIDataTableToolbar-root.css-hyum1k-MuiToolbar-root {
+.accounttable .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation4.tss-11quiee-MUIDataTable-paper.tss-1x5mjc5-MUIDataTable-root.css-11mde6h-MuiPaper-root .MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.tss-tlx3x1-MUIDataTableToolbar-root.css-hyum1k-MuiToolbar-root {
   display: none;
 }
 
@@ -449,4 +458,239 @@ th.MuiTableCell-root.MuiTableCell-head.MuiTableCell-paddingCheckbox.MuiTableCell
 
 td.MuiTableCell-root.MuiTableCell-body.MuiTableCell-paddingCheckbox.MuiTableCell-sizeMedium.tss-12o2szd-MUIDataTableSelectCell-root.tss-1fz4yw6-MUIDataTableSelectCell-fixedLeft.css-1nf681w-MuiTableCell-root {
   display: none;
+}
+
+
+/* Account Management Create User Form  */
+.modal-overlay.account-management-create-user {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Montserrat", serif;
+  background: #2A2A2ABF;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  backdrop-filter: blur(5px);
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-overlay.account-management-create-user .modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  width: 330px;
+  position: relative;
+}
+
+.modal-overlay.account-management-create-user .modal-content h2 {
+  color: #2e3093;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+
+}
+
+.modal-overlay.account-management-create-user .close-button {
+  position: absolute;
+  top: 7px;
+  right: 16px;
+  color: #7E7E7E;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.modal-overlay.account-management-create-user form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-overlay.account-management-create-user form label {
+  margin-top: 10px;
+  color: #2E3093;
+  font-family: "Montserrat", serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.modal-overlay.account-management-create-user form input,
+.modal-overlay.account-management-create-user form select {
+  margin-bottom: 10px;
+  margin-top: 4px;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #939393;
+  border-radius: 4px;
+}
+
+.modal-overlay.account-management-create-user form select option {
+  font-weight: 100;
+}
+
+.modal-overlay.account-management-create-user form button {
+  background-color: #2e3093;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-family: Montserrat;
+  height: 30px;
+  margin-top: 20px;
+  max-width: 100px;
+  border-radius: 5px;
+  min-width: 90px;
+  cursor: pointer;
+  text-align: center;
+}
+
+
+
+@media (max-width:560px) {
+
+  .modal-overlay.account-management-create-user .modal-content,
+  .modal-overlay.bulk-usermodal .modal-content {
+    width: 70% !important;
+  }
+
+}
+
+/* end of Create User Form */
+
+div#\:rj\: {
+  display: none;
+}
+
+/* Bulk User Modal*/
+
+.modal-content.bulkusermodal {
+  width: 450px !important;
+}
+
+.modal-content.bulkusermodal .bulk-user-label {
+  font-size: 12px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  color: #000;
+}
+
+.modal-content.bulkusermodal .bulk-user-label span {
+  color: blue;
+  text-decoration: underline;
+}
+
+.modal-content.bulkusermodal .bulkuser-button-section {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px
+}
+
+.modal-content.bulkusermodal .bulkuser-button-section button.colse-bulk-user-btn {
+  background: #EE3623;
+}
+
+.modal-content.bulkusermodal .file-upload-container {
+  width: 100%;
+  height: 110px;
+  margin-bottom: 10px;
+}
+
+.modal-content.bulkusermodal .file-upload-label {
+  cursor: pointer;
+  display: inline-block;
+  width: 100%;
+  max-width: 600px;
+}
+
+.modal-content.bulkusermodal .file-upload-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  border: 2px dashed #2e3093;
+  background-color: #f5f5ff;
+  color: #2e3093;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  gap: 3px;
+  text-align: center;
+  height: 100% !important;
+}
+
+/* end Bulk User Modal*/
+
+/* change password modal */
+.modal-content.close-password-modal .button-section-flex {
+  display: flex;
+  justify-content: flex-start;
+  gap: 6px;
+  align-items: center !important;
+}
+
+.modal-content.close-password-modal .button-section-flex button {
+  margin-top: 5px;
+}
+
+.modal-content.close-password-modal .button-section-flex .resetpassword-btn {
+  max-width: 300px;
+}
+
+.modal-content.close-password-modal .button-section-flex .close-btn {
+  background-color: #EE3623;
+  text-align: center;
+}
+
+/* delete user modal */
+.modal-content.delete-modal {
+  text-align: center;
+}
+
+.modal-content.delete-modal h2 {
+  font-size: 14px !important;
+}
+
+.modal-content.delete-modal h1 {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+  color: #2E3093;
+  font-weight: 500;
+}
+
+.modal-content.delete-modal .button-section-flex {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 6px;
+  align-items: center !important;
+}
+
+.modal-content.delete-modal .button-section-flex button {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.modal-content.delete-modal .button-section-flex .delete-btn {
+  background-color: #EE3623;
+  text-align: center;
+}
+
+@media (max-width:500px) {
+  .modal-content.delete-modal img {
+    width: 60px;
+  }
+
+  .modal-content.delete-modal h1 {
+    font-size: 20px;
+  }
+
+  .modal-content.delete-modal h2 {
+    font-size: 14px !important;
+  }
 }
