@@ -674,10 +674,11 @@ div#\:rj\: {
 .modal-content.delete-modal .button-section-flex button {
   margin-top: 5px;
   font-size: 14px;
+  background-color: #EE3623;
 }
 
 .modal-content.delete-modal .button-section-flex .delete-btn {
-  background-color: #EE3623;
+  background-color: #2E3093;
   text-align: center;
 }
 
