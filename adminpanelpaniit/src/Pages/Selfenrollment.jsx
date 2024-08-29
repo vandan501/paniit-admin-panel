@@ -1,13 +1,13 @@
 import React from 'react'
+import SelfEnrollmentTable from '../Components/SelfEnrollmentTable'
 
 function Selfenrollment() {
   return  (
     <div className="main-section">
-      <div className="first-heading-row">
-        <h1>Self Enrollment </h1>
+      
+      <div className="data-table-section">
+        <SelfEnrollmentTable />
       </div>
-      <div className="second-filter-row"></div>
-      <div className="data-table-section"></div>
     </div>
   );
 }

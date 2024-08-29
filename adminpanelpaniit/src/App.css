@@ -101,6 +101,7 @@ aside.sidebar.open {
 
 svg.toggle-icon {
   position: absolute;
+  top: 7px;
   right: 2px;
   font-size: 32px;
   cursor: pointer;
@@ -114,7 +115,7 @@ svg.toggle-icon {
   position: relative;
   transition: all 0.3s ease;
   z-index: 99999;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .sidebar.closed {
@@ -124,9 +125,9 @@ svg.toggle-icon {
 .main-content {
   flex-grow: 1;
   margin-top: 60px;
-  height: auto;
+  height: 85vh;
   background-color: #f5f6f8;
-  padding: 20px;
+  padding: 15px;
   transition: all 0.3s ease;
   /* overflow-y: auto; */
 }
@@ -163,12 +164,12 @@ aside.sidebar.open ul li {
   list-style: none;
   width: 95%;
   height: 45px;
-  gap: 25px;
+  gap: 10px;
   color: #000;
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 15px;
-
+  font-size: 14px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -196,7 +197,8 @@ aside.sidebar.open ul a {
 aside.sidebar.open ul li.active {
   list-style: none;
   width: 95%;
-  gap: 25px;
+  gap: 10px;
+  font-size: 14px;
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 15px !important;
@@ -236,7 +238,7 @@ aside.sidebar.open ul li.active a {
     font-size: 14px;
 
     * {
-      gap: 16px !important;
+      gap: 14px !important;
     }
   }
 
@@ -273,8 +275,8 @@ aside.sidebar.open ul li.active a {
   flex-wrap: wrap;
   display: flex;
   justify-content: space-between;
+  align-items: start;
   /* align-items: end; */
-  align-items: end;
 }
 
 .main-content .main-section .first-heading-row h1 {
@@ -362,6 +364,11 @@ aside.sidebar.open ul li.active a {
   justify-content: space-between;
   align-items: end;
   flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: #fff;
+  margin-top: 0;
 }
 
 .main-content .main-section .second-filter-row .entries-filter {
@@ -398,6 +405,7 @@ aside.sidebar.open ul li.active a {
 .search-box input {
   padding: 5px;
   font-size: 14px;
+  border: 0.5px solid #000000;
   background-color: #fff;
 }
 
@@ -439,27 +447,9 @@ aside.sidebar.open ul li.active a {
 
 .main-section .data-table-section {
   position: relative;
+  /* border: solid; */
   overflow: auto;
 }
-
-.main-section .data-table-section .accounttable {
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-.accounttable .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation4.tss-11quiee-MUIDataTable-paper.tss-1x5mjc5-MUIDataTable-root.css-11mde6h-MuiPaper-root .MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.tss-tlx3x1-MUIDataTableToolbar-root.css-hyum1k-MuiToolbar-root {
-  display: none;
-}
-
-th.MuiTableCell-root.MuiTableCell-head.MuiTableCell-paddingCheckbox.MuiTableCell-sizeMedium.tss-12o2szd-MUIDataTableSelectCell-root.tss-qw25q6-MUIDataTableSelectCell-fixedHeader.tss-1fz4yw6-MUIDataTableSelectCell-fixedLeft.tss-ylo811-MUIDataTableSelectCell-headerCell.css-hbtnrh-MuiTableCell-root {
-  display: none;
-}
-
-td.MuiTableCell-root.MuiTableCell-body.MuiTableCell-paddingCheckbox.MuiTableCell-sizeMedium.tss-12o2szd-MUIDataTableSelectCell-root.tss-1fz4yw6-MUIDataTableSelectCell-fixedLeft.css-1nf681w-MuiTableCell-root {
-  display: none;
-}
-
 
 /* Account Management Create User Form  */
 .modal-overlay.account-management-create-user {
@@ -694,4 +684,31 @@ div#\:rj\: {
   .modal-content.delete-modal h2 {
     font-size: 14px !important;
   }
+}
+.table-container.self-enrollment-table .first-heading-row .filter-section-divs {
+  display:flex;
+  width:70%;
+  flex-wrap:wrap;
+  gap:20px;
+  justify-content:space-between;
+}
+.table-container.self-enrollment-table .first-heading-row .filter-section-divs .filter-section{
+  display:flex;
+  justify-content: flex-start;
+  align-items: start;
+  flex-direction:column;
+}
+.table-container.self-enrollment-table .first-heading-row .filter-section-divs .filter-section label{
+    color: #707070;
+  font-size: 12px;
+}
+
+.table-container.self-enrollment-table .first-heading-row .filter-section-divs .filter-section select{
+  border: 0.5px solid #7B7B7B;
+    background: #fff;
+    padding: 2px;
+    width:150px;
+    max-width:300px;
+    margin: 5px;
+    color: #7B7B7B;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-// import Accounttable from "../Components/Accounttable";
 import importicons from "../icons/Vector.svg";
-import UserTable from "../Components/UserTable";
+import AccountManagementTable from "../Components/AccountManagementTable"
+
 import crossicon from "../icons/deleteuser.svg"
 function Accountmanagement() {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
@@ -74,26 +74,8 @@ function Accountmanagement() {
           </div>
         </div>
       </div>
-      <div className="second-filter-row">
-        <div className="entries-filter">
-          <label for="entries">Show</label>
-          <select id="entries" name="entries">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-          <span>entries</span>
-        </div>
-
-        <div className="search-box">
-          <label for="search">Search:</label>
-          <input type="text" id="search" name="search" />
-        </div>
-      </div>
       <div className="data-table-section">
-        {/* <Accounttable/> */}
-        <UserTable handleOpenEditProfileModal={handleOpenEditProfileModal} 
+        <AccountManagementTable handleOpenEditProfileModal={handleOpenEditProfileModal} 
         handleOpenChangePasswordModal={handleOpenChangePasswordModal}
         handleOpenDeleteModal={handleOpenDeleteModal}
         />
@@ -149,8 +131,8 @@ function Accountmanagement() {
                 <input
                   type="file"
                   id="file-upload"
-                  onChange={handleFileUpload}
                   accept=".csv"
+                  onChange={handleFileUpload}
                   style={{ display: "none" }}
                 />
                 <label htmlFor="file-upload" className="file-upload-label">
