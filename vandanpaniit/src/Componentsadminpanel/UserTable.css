@@ -1,0 +1,390 @@
+.table-container {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.table-container table {
+    width: 100%;
+    /* height: 80%; */
+    overflow: scroll !important;
+    border-collapse: collapse;
+}
+
+.table-container tr td {
+    padding: 0px 5px 0px 20px !important;
+    font-size: 12px;
+}
+
+.table-container tr th {
+    padding: 0px 5px 0px 20px !important;
+    font-size: 12px;
+}
+
+.table-container .pagination {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+button {
+    background-color: #4b4bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    /* flex-wrap: wrap; */
+}
+
+.action-buttons img {
+    width: 20px;
+    height: 20px;
+}
+
+.edit-btn,
+.view-btn,
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+.data-table-section .table-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+}
+
+.data-table-section .table-container {
+    position: absolute;
+    top: 0;
+    scrollbar-width: thin;
+    width: 99%;
+    height: 100%;
+    text-align: left;
+    left: 0;
+    overflow: auto;
+}
+
+.table-container table {
+    border: 1px solid #F4F4F4;
+}
+
+.table-container table td,
+th {
+    border: 1px solid #F4F4F4;
+}
+
+.table-container .pagination-container {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.table-container .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.table-container .pagination li a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.table-container .pagination .active a {
+    background-color: #4b4bff;
+    color: white;
+    border: 1px solid #4b4bff;
+}
+
+button {
+    background-color: #4b4bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.action-buttons img {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.edit-btn,
+.view-btn,
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.table-container table thead tr {
+    height: 25px;
+}
+
+.pagination-container {
+    color: #707070;
+
+    span {
+        font-size: 12px;
+    }
+}
+
+.pagination-container .pagination-controls button {
+    background: transparent;
+    border: 1.3px solid #707070;
+    color: #707070;
+    border-radius: 0 !important;
+    font-weight: 300;
+}
+
+.pagination-container .pagination-controls button.active {
+    background-color: #2e3093;
+    color: #fff;
+    /* border-radius: none !important; */
+    border: 1px solid #2e3093;
+    /* border: none; */
+}
+
+/* SelefEnrollmentpagecss */
+.data-table-section .table-container.self-enrollment-table {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    gap: 15px;
+}
+
+
+
+.data-table-section .table-container.self-enrollment-table .select-status:focus {
+    outline: none;
+}
+
+.data-table-section .table-container.self-enrollment-table .select-status {
+    border: 0.5px solid #7B7B7B;
+    background: #fff;
+    padding: 2px;
+    margin: 5px;
+    color: #7B7B7B;
+
+}
+
+.data-table-section .table-container.self-enrollment-table .select-status option {
+    background: #fff;
+    color: #7B7B7B;
+
+}
+
+select:focus {
+    outline: none !important;
+}
+
+input:focus {
+    outline: none !important;
+}
+
+main.main-content .main-section:has(.table-container.self-enrollment-table) {
+    height: 80vh;
+}
+
+.main-section .table-container.self-enrollment-table {
+    .first-heading-row {
+        position: sticky;
+        left: 0;
+        top: 0;
+    }
+}
+
+/* Batch Management Details Page Table */
+
+section.dashboard-content main.main-content .batch-details-page {
+       width:99%;
+      position:relative;
+    display:flex;
+    flex-direction:column;
+    /* gap:30px; */
+    overflow:hidden;
+    background:#f5f6f8 !important;
+   }
+   
+   section.dashboard-content main.main-content .batch-details-page .main-section {
+    padding:0;
+    width:100%;
+    min-height:50vh;
+    /* border: solid black; */
+    overflow: none;
+    height:60vh;
+   }
+   section.dashboard-content main.main-content .batch-details-page .main-section .table-container.batch-management-table {
+    /* overflow: hidden !important; */
+   }
+   
+   .batch-details-page h2.heading-of-batch {
+    padding:0;
+    margin:0;
+    color :#2E3093;
+    font-weight:500;
+    display:flex;
+    margin-bottom: 20px;
+    justify-content:flex-start;
+    align-items:center;
+    gap:4px;
+    
+}
+.batch-details-page h2.heading-of-batch .back-icon{
+    color:#000;
+    width: 27px;
+    height:17px;
+
+}
+
+.batch-details-page .main-section{
+    padding:15px !important;
+}
+.batch-details-page .main-section h3 {
+    margin:0;
+    font-size: 20px;
+    width: 80%;
+    font-weight:500;
+}
+.batch-details-page .main-section h3 span{
+    color:#2E3093;
+    margin:0 !important;
+}
+.batch-details-page .main-section .first-heading-row {
+    height:auto !important;
+    min-height:20px !important;
+}
+.batch-details-page .main-section .first-heading-row h4{
+    margin:0;
+    color:#2E3093;
+    font-weight:500;
+    margin-top: 10px;
+}.main-section.user-list-table {
+    margin-top:30px;
+}
+.main-section.teacher-list {
+    margin-top:15px;
+}
+
+main.main-content:has(.batch-details-page) {
+    overflow:auto;
+}
+
+
+
+main.main-content .batch-details-page .main-section.teacher-list
+{
+    margin:0;
+    width:100%;
+
+    gap:15px;
+}
+main.main-content .batch-details-page .main-section.user-list-table
+{
+    width:100%;
+    gap:15px;
+}
+main.main-content .batch-details-page .main-section.teacher-list   .table-container.batch-management-table {
+    width:98%;
+}
+main.main-content .batch-details-page .main-section.user-list-table  .table-container.batch-management-table {
+    width:98%;
+}
+main.main-content .batch-details-page    .table-container.batch-management-table {
+    table tr td {
+        padding: 0px 5px 0px 20px;
+        font-size: 12px;
+    }
+    
+    table tr th {
+        padding: 0px 5px 0px 20px;
+        font-size: 12px;
+        text-align: left;
+    }
+    
+}
+
+.batch-details-page {
+    .main-section.teacher-list {
+            height:100% !important;
+             min-height:100% ;
+             width: auto !important;
+             overflow-x: auto;
+            table tr td{
+                padding-top:5px !important;
+                padding-bottom:5px !important;
+            }    
+    }
+    
+    .main-section.user-list-table {
+                height:100% !important;
+                width: auto !important;
+                min-height:100% ;
+                table tr td{
+                padding-top:5px !important;
+                padding-bottom:5px !important;
+            }    
+           
+    }
+    }
+
+
+    @media (max-width:600px)
+    {
+    .batch-details-page {
+        overflow:auto !important;
+    }
+    .batch-details-page .main-section.teacher-list {
+        overflow:auto !important;
+    }
+    .batch-details-page .main-section.teacher-list .table-container.batch-management-table {
+        overflow:auto !important;
+    }
+    }
+    
+    
+    
+    
