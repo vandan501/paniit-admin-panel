@@ -1,25 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react'; // Import useState and useEffect
+import React, { useMemo } from 'react'; // Import useState and useEffect
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
 import './UserTable.css';
-// import editicon from "../icons/edit.svg";
 import deleteicon from "../icons/deleteTeacher.svg";
-// import changepasswordicon from "../icons/changepassword.svg";
 
-const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePasswordModal, handleOpenDeleteModal }) => {
-  const [data, setData] = useState([]); // State to store fetched data
-
-  useEffect(() => {
-    fetch('http://localhost:4000/students') // Update this URL to match your JSON server endpoint
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []); // Empty dependency array to run only on component mount
-
+const StudentEnrollmentTable = ({ handleOpenDeleteModal, data, page, totalCount, setPage, setSearch, setPageSize }) => {
+  // Define columns with useMemo
   const columns = useMemo(
     () => [
       {
         Header: 'Sr. No',
-        accessor: 'srNo',
+        accessor: 'sr_no',
       },
       {
         Header: 'Email',
@@ -27,35 +17,29 @@ const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePa
       },
       {
         Header: 'Aadhar Number',
-        accessor: 'aadharNumber',
+        accessor: 'Aadhar Number',
       },
       {
         Header: 'Full Name',
-        accessor: 'fullname',
+        accessor: 'Full Name',
       },
       {
         Header: 'Program Name',
-        accessor: 'programname',
+        accessor: 'enrolled_programs',
       },
       {
         Header: 'Action',
         accessor: 'action',
         Cell: ({ row }) => (
           <div className="action-buttons">
-            {/* <button className="edit-btn" onClick={handleOpenEditProfileModal}>
-              <img src={editicon} alt='edit icon' />
-            </button>
-            <button className="view-btn" onClick={handleOpenChangePasswordModal}>
-              <img src={changepasswordicon} alt='change password icon' />
-            </button> */}
-            <button className="delete-btn" onClick={handleOpenDeleteModal}>
+            <button className="delete-btn" onClick={() => handleOpenDeleteModal(row.original)}>
               <img src={deleteicon} alt='delete icon' className='delete-image-student-management'/>
             </button>
           </div>
         ),
       },
     ],
-    [handleOpenEditProfileModal, handleOpenChangePasswordModal, handleOpenDeleteModal]
+    [handleOpenDeleteModal]
   );
 
   const {
@@ -63,39 +47,43 @@ const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePa
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    page,
+    page: tablePage,
     canNextPage,
     canPreviousPage,
     pageOptions,
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
+    setPageSize: setTablePageSize,
     state: { pageIndex, pageSize, globalFilter },
     setGlobalFilter,
   } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageIndex: 0, pageSize: 10 },
-    },
+    { columns, data, initialState: { pageIndex: page, pageSize: 10 } }, // default pageSize of 10 if not provided
     useGlobalFilter,
     usePagination
   );
 
-  const handlePageChange = (pageNumber) => {
-    gotoPage(pageNumber);
+  // Update local pageSize if changed from the select dropdown
+  const handlePageSizeChange = (event) => {
+    const newSize = Number(event.target.value);
+    setPageSize(newSize);
+    setTablePageSize(newSize);
   };
 
   const startRow = pageIndex * pageSize + 1;
-  const endRow = Math.min((pageIndex + 1) * pageSize, data.length);
+  const endRow = Math.min((pageIndex + 1) * pageSize, totalCount);
 
   return (
     <div className="table-container">
       <div className="second-filter-row">
         <div className="entries-filter">
           <label htmlFor="entries">Show</label>
-          <select id="entries" name="entries" value={pageSize} onChange={e => setPageSize(Number(e.target.value))}>
+          <select
+            id="entries"
+            name="entries"
+            value={pageSize || 10} // Use default value of 10 if pageSize is undefined
+            onChange={handlePageSizeChange}
+          >
             {[10, 20, 30, 40, 50].map(size => (
               <option key={size} value={size}>
                 {size}
@@ -112,7 +100,7 @@ const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePa
             id="search"
             name="search"
             value={globalFilter || ''}
-            onChange={e => setGlobalFilter(e.target.value)}
+            onChange={(e) => setGlobalFilter(e.target.value)}
           />
         </div>
       </div>
@@ -128,7 +116,7 @@ const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePa
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map(row => {
+          {tablePage.map(row => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -143,7 +131,7 @@ const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePa
 
       <div className="pagination-container">
         <div className="footer-info">
-          <span>Show {startRow} to {endRow} of {data.length} entries</span>
+          <span>Showing {startRow} to {endRow} of {totalCount} entries</span>
         </div>
         <div className="pagination-controls">
           <button onClick={() => previousPage()} disabled={!canPreviousPage}>
@@ -152,7 +140,7 @@ const StudentEnrollmentTable = ({ handleOpenEditProfileModal, handleOpenChangePa
           {pageOptions.map((pageNumber) => (
             <button
               key={pageNumber}
-              onClick={() => handlePageChange(pageNumber)}
+              onClick={() =>  (pageNumber)}
               className={pageIndex === pageNumber ? 'active' : ''}
             >
               {pageNumber + 1}

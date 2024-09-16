@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-// import Accounttable from "../Components/Accounttable";
+import React, { useEffect, useState } from "react";
 import importicons from "../icons/Vector.svg";
 import StudentEnrollmentTable from "../Componentsadminpanel/StudentEnrollmentTable";
-import Select from 'react-select'; // Added import for react-select
+import Select from 'react-select'; 
 import crossicon from "../icons/deleteuser.svg"
 import { useForm, Controller } from 'react-hook-form';
 
@@ -10,7 +9,12 @@ import { useForm, Controller } from 'react-hook-form';
 function Studentenrollment() {
   // for form validations
   const { register, handleSubmit, formState: { errors }, setValue, control, clearErrors, watch } = useForm();
-
+  
+  const [studentenrolldata, setStudentEnrollData] = useState([]); 
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [search, setSearch] = useState('');
+  const [totalCount, setTotalCount] = useState(0);
   const ProgramOptions = [
     { value: 'Super Admin', label: 'Super Admin' },
     { value: 'Admin', label: 'Admin' },
@@ -29,8 +33,7 @@ function Studentenrollment() {
 
   const [showStudentEnrollmentModal, setshowStudentEnrollmentModal] = useState(false);
   const [showStudentEnrollmentBulkUserModal, setshowStudentEnrollmentBulkUserModal] = useState(false);
-  // const [editStudentEnrollmentModal, seteditStudentEnrollmentModal] = useState(false);
-  // const [changepasswordModal, setChangePasswordModal] = useState(false);
+  
   const [deleteStudentEnrollmentModal, setdeleteStudentEnrollmentModal] = useState(false);
   const [uploadbulkstudentenrollmentfile, setuploadbulkstudentenrollmentfile] = useState("");
 
@@ -55,18 +58,7 @@ function Studentenrollment() {
   const handleCloseBulkUserModal = () => {
     setshowStudentEnrollmentBulkUserModal(false);
   };
-  // const handleOpenEditProfileModal = () => {
-  //   seteditStudentEnrollmentModal(true);
-  // };
-  // const handleCloseEditProfileModal = () => {
-  //   seteditStudentEnrollmentModal(false);
-  // };
-  // const handleOpenChangePasswordModal = () => {
-  //   setChangePasswordModal(true);
-  // };
-  // const handleCloseChangePasswordModal = () => {
-  //   setChangePasswordModal(false);
-  // };
+
   const handleOpenDeleteModal = () => {
     setdeleteStudentEnrollmentModal(true);
   };
@@ -75,7 +67,7 @@ function Studentenrollment() {
   };
 
 
- // **Updated the handleFileUpload function to validate file type and set error message**
+ 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -99,11 +91,10 @@ function Studentenrollment() {
     if (!uploadbulkstudentenrollmentfile) {
       setFileUploadError("*Please select a CSV file."); // Set error if no file is selected
     } else {
-      // Proceed with the form submission logic
       setFileUploadError("");
       console.log("Uploading file:", uploadbulkstudentenrollmentfile);
-      // Add logic to handle the file upload here
-      handleCloseBulkUserModal(); // Close the modal after successful upload
+ 
+      handleCloseBulkUserModal();
     }
   };
 
@@ -126,65 +117,70 @@ function Studentenrollment() {
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
-      fontSize: "13px", // Change this value to your desired font size
+      fontSize: "13px", 
     }),
     menuList: (provided) => ({
       ...provided,
       maxHeight: '100px',
       overflowY: 'auto',
       scrollbarWidth: 'thin',
-    }),
-    option: (provided) => ({
-      ...provided,
-      fontSize: '13px'
-    }),
+    })
   };
 
+async function handleGetStudentEnrollData() {
+  try {
+    const formData = new FormData();
+    formData.append('search', search);
+    formData.append('page', pageIndex);
+    formData.append('length', pageSize);
+
+    const response = await fetch('http://local.edly.io:8000/api/studentenrollment/', {
+      method: 'POST',
+      body: formData
+    });
+    
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const result = await response.json();
+   if (result) {
+    setStudentEnrollData(result?.studentdetails); 
+    setTotalCount(result.totalCount);
+    console.log("Fetched data:", result.studentdetails); 
+    } 
+  } catch (error) {
+    console.error("Error while fetching data:", error);
+  }
+}
+
+useEffect(() => {
+  handleGetStudentEnrollData();
+}, [search, pageIndex, pageSize]);
   return (
     <div className="main-section student-enrollment">
       <div className="first-heading-row">
         <h1>Student Enrollment</h1>
         <div className="right-side-content">
-          {/* <div className="filter-by-row-div">
-            <span>Filter by role:- </span>
-            <select>
-              <option>Filter By Role</option>
-              <option>Super Admin</option>
-              <option>Admin</option>
-              <option>Course Creator</option>
-              <option>Teacher</option>
-              <option>Student</option>
-            </select>
-          </div> */}
           <div className="account-management">
             <button onClick={handleOpenCreateUserModal} className="student-enrollment-button-width">Student Enrollment</button>
             <button onClick={handleOpenbulkUserModal}>Bulk Enrollment</button>
           </div>
         </div>
       </div>
-      {/* <div className="second-filter-row">
-        <div className="entries-filter">
-          <label for="entries">Show</label>
-          <select id="entries" name="entries">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-          <span>entries</span>
-        </div>
-
-        <div className="search-box">
-          <label for="search">Search:</label>
-          <input type="text" id="search" name="search" />
-        </div>
-      </div> */}
-      <div className="data-table-section">
-        {/* <Accounttable/> */}
+     <div className="data-table-section">
+        {studentenrolldata &&
         <StudentEnrollmentTable
           handleOpenDeleteModal={handleOpenDeleteModal}
+          data={studentenrolldata}
+          page={pageIndex}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          setPage={setPageIndex}
+          setPageSize={setPageSize}
+          setSearch={setSearch}
         />
-
+      }
       </div>
       {/* StudentEnrollmentModal Modal */}
       {showStudentEnrollmentModal && (

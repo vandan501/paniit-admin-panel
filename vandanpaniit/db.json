@@ -1,0 +1,54 @@
+{
+    "studentdetails": [
+        {
+            "sr_no": 1,
+            "student_enroll_id": 2,
+            "email": "xyzw@example.com",
+            "Aadhar Number": "432215671234",
+            "Full Name": "Kaushal Patel",
+            "enrolled_programs": "postman api",
+            "program_id": 15,
+            "program_uuid": "02c4f573-7793-44ec-b2f1-c9fc6bb20df3"
+        },
+        {
+            "sr_no": 2,
+            "student_enroll_id": 3,
+            "email": "champachampachouha36@gmail.com",
+            "Aadhar Number": null,
+            "Full Name": "Champa_chouhan",
+            "enrolled_programs": "postman api demo123",
+            "program_id": 31,
+            "program_uuid": "7ceba0f2-87c8-4b96-85fb-e48088531b9b"
+        },
+        {
+            "sr_no": 3,
+            "student_enroll_id": 4,
+            "email": "dollykumari06062004@gmail.com",
+            "Aadhar Number": null,
+            "Full Name": "DOLLY_KUMARI",
+            "enrolled_programs": "postman api demo123",
+            "program_id": 31,
+            "program_uuid": "7ceba0f2-87c8-4b96-85fb-e48088531b9b"
+        },
+        {
+            "sr_no": 4,
+            "student_enroll_id": 5,
+            "email": "champachampachouha36@gmail.com",
+            "Aadhar Number": null,
+            "Full Name": "Champa_chouhan",
+            "enrolled_programs": "postman api demo123",
+            "program_id": 31,
+            "program_uuid": "7ceba0f2-87c8-4b96-85fb-e48088531b9b"
+        },
+        {
+            "sr_no": 5,
+            "student_enroll_id": 6,
+            "email": "dollykumari06062004@gmail.com",
+            "Aadhar Number": null,
+            "Full Name": "DOLLY_KUMARI",
+            "enrolled_programs": "postman api demo123",
+            "program_id": 31,
+            "program_uuid": "7ceba0f2-87c8-4b96-85fb-e48088531b9b"
+        }
+    ]
+}
