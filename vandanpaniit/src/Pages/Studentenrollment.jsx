@@ -7,29 +7,19 @@ import { useForm, Controller } from 'react-hook-form';
 
 
 function Studentenrollment() {
-  // for form validations
-  const { register, handleSubmit, formState: { errors }, setValue, control, clearErrors, watch } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue, control, clearErrors, watch,reset } = useForm();
   
   const [studentenrolldata, setStudentEnrollData] = useState([]); 
+  const [start,setStart]=useState(0);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [search, setSearch] = useState('');
   const [totalCount, setTotalCount] = useState(0);
-  const ProgramOptions = [
-    { value: 'Super Admin', label: 'Super Admin' },
-    { value: 'Admin', label: 'Admin' },
-    { value: 'Course Creator', label: 'Course Creator' },
-    { value: 'Teacher', label: 'Teacher' },
-    { value: 'Student', label: 'Student' },
-  ];
-
-  const StudentOptions = [
-    { value: 'Super Admin', label: 'Super Admin' },
-    { value: 'Admin', label: 'Admin' },
-    { value: 'Course Creator', label: 'Course Creator' },
-    { value: 'Teacher', label: 'Teacher' },
-    { value: 'Student', label: 'Student' },
-  ];
+  const [students,setStudents]=useState([]);
+  const [programs,setPrograms]=useState([]);
+  const [programOptions, setProgramOptions] = useState([]);
+  
+  const [studentOptions, setStudentOptions] = useState([]);
 
   const [showStudentEnrollmentModal, setshowStudentEnrollmentModal] = useState(false);
   const [showStudentEnrollmentBulkUserModal, setshowStudentEnrollmentBulkUserModal] = useState(false);
@@ -37,16 +27,15 @@ function Studentenrollment() {
   const [deleteStudentEnrollmentModal, setdeleteStudentEnrollmentModal] = useState(false);
   const [uploadbulkstudentenrollmentfile, setuploadbulkstudentenrollmentfile] = useState("");
 
-  // **Added state to manage error messages for file upload validation**
   const [fileUploadError, setFileUploadError] = useState("");
-
-  const [selectedPrograms, setSelectedPrograms] = useState([]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
-
+  const [studentData, setStudentData] = useState("");
+  console.log("student data=====>",studentData)
   const handleOpenCreateUserModal = () => {
+    
     setshowStudentEnrollmentModal(true);
   };
   const handleCloseCreateUserModal = () => {
+    reset();
     setshowStudentEnrollmentModal(false);
   };
 
@@ -56,68 +45,163 @@ function Studentenrollment() {
   };
 
   const handleCloseBulkUserModal = () => {
+    reset();
     setshowStudentEnrollmentBulkUserModal(false);
   };
 
-  const handleOpenDeleteModal = () => {
+  const handleOpenDeleteModal = (studentData) => {
+    setStudentData(studentData); 
+    console.log("Student enroll ID being passed:", studentData);
     setdeleteStudentEnrollmentModal(true);
   };
   const handleCloseDeleteModal = () => {
+    reset();
+    setStudentData(null);
     setdeleteStudentEnrollmentModal(false);
   };
 
 
- 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       if (file.type !== "text/csv") {
         setFileUploadError("*Please select a CSV file only.");
-        setuploadbulkstudentenrollmentfile("");
+        setuploadbulkstudentenrollmentfile(null); 
       } else {
-        setuploadbulkstudentenrollmentfile(file.name);
-        setFileUploadError(""); // Clear error if valid CSV is selected
+        setuploadbulkstudentenrollmentfile(file); 
+        setFileUploadError(""); 
       }
     } else {
-      setuploadbulkstudentenrollmentfile("");
+      setuploadbulkstudentenrollmentfile(null); 
       setFileUploadError("*Please select a CSV file.");
     }
   };
-
-
-  // **Added function to handle the bulk upload form submission**
-  const handleBulkUploadSubmit = (e) => {
+  
+  const handleBulkUploadSubmit = async (e) => {
     e.preventDefault();
+  
     if (!uploadbulkstudentenrollmentfile) {
-      setFileUploadError("*Please select a CSV file."); // Set error if no file is selected
-    } else {
-      setFileUploadError("");
-      console.log("Uploading file:", uploadbulkstudentenrollmentfile);
- 
+      setFileUploadError("*Please select a CSV file.");
+      return;
+    }
+  
+    setFileUploadError("");  
+    console.log("Uploading file:", uploadbulkstudentenrollmentfile);
+  
+    
+    const formData = new FormData();
+    formData.append('bulk_user_enroll_file', uploadbulkstudentenrollmentfile);
+  
+    try {
+      const response = await fetch('http://local.edly.io:8000/api/enrollbulkstudents/', {
+        method: 'POST',
+        body: formData, 
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log("File uploaded successfully:", result);
+  
+      // Close the modal after a successful upload
       handleCloseBulkUserModal();
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setFileUploadError("Error uploading file. Please try again.");
     }
   };
 
+  const handleDelete = async () => {
+    if (!studentData) return;
+  
+    // Extract the unique identifier (student_enroll_id) from studentData
+    const { student_enroll_id, email, program_id } = studentData;
+  
+    // Log the unique identifier and student data for confirmation
+    console.log("Deleting student with ID:", student_enroll_id);
+    console.log("Student data being sent:", { student_enroll_id, email, program_id });
+  
+    const formData = new FormData();
+    formData.append('student_enroll_id', student_enroll_id);
+    formData.append('email', email);
+    formData.append('program_id', program_id);
+  
+    // Log FormData for debugging
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+  
+    try {
+      const response = await fetch('http://local.edly.io:8000/api/unenrollstudent/', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error("HTTP error:", errorData);
+        return;
+      }
+  
+      const result = await response.json();
+      console.log("Deletion successful:", result);
+  
+      handleCloseDeleteModal();
+    } catch (error) {
+      console.error("Error deleting student enrollment:", error);
+    }
+  };
+  
   
 
   const handleClickOutsideModal = (event) => {
     if (event.target.classList.contains("modal-overlay")) {
+      reset()
       handleCloseCreateUserModal();
       handleCloseBulkUserModal();
       handleCloseDeleteModal();
     }
   }
-  const onSubmitStudentEnrollment = (data) => {
-    console.log(data);
-    // Handle form submission logic here
+  async function onSubmitStudentEnrollment(data) {
+    const programId = data.studentEnrollmentProgram ? data.studentEnrollmentProgram.value : "";
+    const userIds = data.StudentSelectStudent ? data.StudentSelectStudent.map(student => student.value) : [];
+    
+    const payload = {
+      program_id: programId,
+      user_ids: userIds, // This will be sent as a list
+    };
+    console.log("Payload",payload)
+    try {
+      const response = await fetch('http://local.edly.io:8000/api/enrollstudent/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Set the content type to JSON
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log("Submission result:", result);
+  
+    } catch (error) {
+      console.error("Error while submitting data:", error);
+    }
+  
     handleCloseCreateUserModal();
-  };
-
+  }
+  
+  
   // Custom styles for react-select
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
-      fontSize: "13px", 
+      fontSize: "12px", 
     }),
     menuList: (provided) => ({
       ...provided,
@@ -127,36 +211,67 @@ function Studentenrollment() {
     })
   };
 
-async function handleGetStudentEnrollData() {
-  try {
-    const formData = new FormData();
-    formData.append('search', search);
-    formData.append('page', pageIndex);
-    formData.append('length', pageSize);
+  
 
-    const response = await fetch('http://local.edly.io:8000/api/studentenrollment/', {
-      method: 'POST',
-      body: formData
-    });
-    
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+  async function fetchProgramsAndStudents() {
+    try {
+      const response = await fetch('http://local.edly.io:8000/api/studentenrollment/');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setPrograms(data.programs);
+      setStudents(data.students);
+    } catch (error) {
+      console.error("Error fetching programs and students:", error);
     }
-    const result = await response.json();
-   if (result) {
-    setStudentEnrollData(result?.studentdetails); 
-    setTotalCount(result.totalCount);
-    console.log("Fetched data:", result.studentdetails); 
-    } 
-  } catch (error) {
-    console.error("Error while fetching data:", error);
   }
-}
+  
+  async function fetchStudentEnrollData(search,pageIndex,pageSize,start) {
+    try {
+      const formData = new FormData();
+      formData.append('search', search);
+      formData.append('draw', pageIndex+ 1);
+      formData.append('length', pageSize);
+      formData.append('start', start);
 
-useEffect(() => {
-  handleGetStudentEnrollData();
-}, [search, pageIndex, pageSize]);
+      const response = await fetch('http://local.edly.io:8000/api/studentenrollment/', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setStudentEnrollData(result?.studentdetails);
+      setTotalCount(result?.total_count);
+    } catch (error) {
+      console.error("Error while fetching student enroll data:", error);
+    }
+  }
+
+
+  useEffect(() => {
+    fetchProgramsAndStudents();
+    fetchStudentEnrollData(search,pageIndex,pageSize,start);
+  }, [search, pageIndex, pageSize,start]);
+
+  useEffect(() => {
+    const updatedProgramOptions = programs.map(program => ({
+      value: program.id,
+      label: program.name,
+    }));
+    setProgramOptions(updatedProgramOptions);
+
+    const updatedStudentOptions = students.map(student => ({
+      value: student.id,
+      label: student.username,
+    }));
+    setStudentOptions(updatedStudentOptions);
+  }, [programs, students]);
+
   return (
     <div className="main-section student-enrollment">
       <div className="first-heading-row">
@@ -173,8 +288,11 @@ useEffect(() => {
         <StudentEnrollmentTable
           handleOpenDeleteModal={handleOpenDeleteModal}
           data={studentenrolldata}
-          page={pageIndex}
+          pageIndex={pageIndex}
           pageSize={pageSize}
+          setPageIndex={setPageIndex}
+          setStart={setStart}
+          start={start}
           totalCount={totalCount}
           setPage={setPageIndex}
           setPageSize={setPageSize}
@@ -203,8 +321,8 @@ useEffect(() => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={ProgramOptions}
-                    placeholder="Select Problem"
+                    options={programOptions}
+                    placeholder="Select Program"
                     onChange={(option) => {
                       setValue("studentEnrollmentProgram", option);
                       if (option) {
@@ -212,7 +330,6 @@ useEffect(() => {
                       }
                     }}
                     value={field.value}
-                    // styles={{ option: (provided) => ({ ...provided, fontSize: '13px' }) }}
                     styles={customStyles}
                   />
                 )}
@@ -222,14 +339,6 @@ useEffect(() => {
                   {errors.studentEnrollmentProgram.message}
                 </p>
               )}
-              {/* <label>Select Program</label>
-              <Select
-                options={ProgramOptions}
-                value={selectedPrograms}
-                onChange={setSelectedPrograms}
-                placeholder="Select Role"
-                styles={customStyles} 
-              /> */}
               <label
                 className={errors.StudentSelectStudent ? "label-error" : ""}
               >
@@ -242,7 +351,7 @@ useEffect(() => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={StudentOptions}
+                    options={studentOptions}
                     isMulti
                     placeholder="Select Student"
                     onChange={(options) => {
@@ -261,17 +370,6 @@ useEffect(() => {
                   {errors.StudentSelectStudent.message}
                 </p>
               )}
-              {/* <label>Select Student</label>
-              <Select
-                options={StudentOptions}
-                value={selectedCourses}
-                isMulti
-                onChange={setSelectedCourses}
-                placeholder="Select Role"
-                styles={customStyles} 
-              /> */}
-
-
 
               <button type="submit">Create</button>
             </form>
@@ -279,61 +377,61 @@ useEffect(() => {
         </div>
       )}
       {/* Bulk User Modal */}
-      {showStudentEnrollmentBulkUserModal && (
-        <div className="modal-overlay account-management-create-user" onClick={handleClickOutsideModal}>
-          <div className="modal-content bulkusermodal">
-            <span className="close-button" onClick={handleCloseBulkUserModal}>
-              &times;
-            </span>
-            <h2>Bulk User Enrollment</h2>
-            <form onSubmit={handleBulkUploadSubmit}>
-              <div className="file-upload-container">
-                <input
-                  type="file"
-                  id="file-upload"
-                  onChange={handleFileUpload}
-                  accept=".csv"
-                  style={{ display: "none" }}
-                />
-                <label htmlFor="file-upload" className="file-upload-label">
-                  <div className="file-upload-box">
-                    <img
-                      src={importicons}
-                      className="upload-icon"
-                      alt="upload-file-icon"
-                    />
-                    {uploadbulkstudentenrollmentfile
-                      ? uploadbulkstudentenrollmentfile
-                      : "Upload Your CSV File here..."}
-                  </div>
-                </label>
+{showStudentEnrollmentBulkUserModal && (
+  <div className="modal-overlay account-management-create-user" onClick={handleClickOutsideModal}>
+    <div className="modal-content bulkusermodal">
+      <span className="close-button" onClick={handleCloseBulkUserModal}>
+        &times;
+      </span>
+      <h2>Bulk User Enrollment</h2>
+      <form onSubmit={handleBulkUploadSubmit}>
+        <div className="file-upload-container">
+          <input
+            type="file"
+            id="file-upload"
+            name="bulk_user_enroll_file"
+            onChange={handleFileUpload}
+            accept=".csv"
+            style={{ display: "none" }}
+          />
+          <label htmlFor="file-upload" className="file-upload-label">
+            <div className="file-upload-box">
+              <img
+                src={importicons}
+                className="upload-icon"
+                alt="upload-file-icon"
+              />
+              <div>
+                {uploadbulkstudentenrollmentfile
+                  ? uploadbulkstudentenrollmentfile.name // Display file name
+                  : "Upload Your CSV File here..."}
               </div>
-               {/* **Added error message display for file upload** */}
-               {fileUploadError && (
-                <p className="errorMessage">{fileUploadError}</p>
-              )}
-              <label className="bulk-user-label">
-                Sample File For Bulk User Creation <span> Click Here </span>to
-                Download.
-              </label>
-              <div className="bulkuser-button-section">
-                <button
-                  type="button"
-                  className="colse-bulk-user-btn"
-                  onClick={handleCloseBulkUserModal}
-                >
-                  Close
-                </button>
-                <button type="submit" className="upload-bulk-user-btn">
-                  Upload
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+          </label>
         </div>
-      )}
-      {/* Edit StudentEnrollment Modal */}
-
+        {/* Error message display for file upload */}
+        {fileUploadError && (
+          <p className="errorMessage">{fileUploadError}</p>
+        )}
+        <label className="bulk-user-label">
+          Sample File For Bulk User Creation <span>Click Here</span> to Download.
+        </label>
+        <div className="bulkuser-button-section">
+          <button
+            type="button"
+            className="colse-bulk-user-btn"
+            onClick={handleCloseBulkUserModal}
+          >
+            Close
+          </button>
+          <button type="submit" className="upload-bulk-user-btn">
+            Upload
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
       {/* DeleteStudentEnrollmentModal */}
       {deleteStudentEnrollmentModal && (
@@ -354,7 +452,7 @@ useEffect(() => {
               >
                 Cancel
               </button>
-              <button type="submit" className="delete-btn">
+              <button type="submit" className="delete-btn" onClick={handleDelete}>
                 Delete
               </button>
             </div>

@@ -1,39 +1,58 @@
-import React, { useMemo } from 'react'; // Import useState and useEffect
-import { useTable, usePagination, useGlobalFilter } from 'react-table';
-import './UserTable.css';
+import React, { useMemo } from "react";
+import { useTable, usePagination, useGlobalFilter } from "react-table";
+import "./UserTable.css";
 import deleteicon from "../icons/deleteTeacher.svg";
 
-const StudentEnrollmentTable = ({ handleOpenDeleteModal, data, page, totalCount, setPage, setSearch, setPageSize }) => {
-  // Define columns with useMemo
+const StudentEnrollmentTable = ({
+  handleOpenDeleteModal,
+  data,
+  pageIndex,
+  totalCount,
+  setPage,
+  start,
+  search,
+  pageSize,
+  setStart,
+  setPageIndex,
+  setSearch,
+  setPageSize,
+}) => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Sr. No',
-        accessor: 'sr_no',
+        Header: "Sr. No",
+        accessor: "sr_no",
       },
       {
-        Header: 'Email',
-        accessor: 'email',
+        Header: "Email",
+        accessor: "email",
       },
       {
-        Header: 'Aadhar Number',
-        accessor: 'Aadhar Number',
+        Header: "Aadhar Number",
+        accessor: "Aadhar Number",
       },
       {
-        Header: 'Full Name',
-        accessor: 'Full Name',
+        Header: "Full Name",
+        accessor: "Full Name",
       },
       {
-        Header: 'Program Name',
-        accessor: 'enrolled_programs',
+        Header: "Program Name",
+        accessor: "enrolled_programs",
       },
       {
-        Header: 'Action',
-        accessor: 'action',
+        Header: "Action",
+        accessor: "action",
         Cell: ({ row }) => (
           <div className="action-buttons">
-            <button className="delete-btn" onClick={() => handleOpenDeleteModal(row.original)}>
-              <img src={deleteicon} alt='delete icon' className='delete-image-student-management'/>
+            <button
+              className="delete-btn"
+              onClick={() => handleOpenDeleteModal(row.original)}
+            >
+              <img
+                src={deleteicon}
+                alt="delete icon"
+                className="delete-image-student-management"
+              />
             </button>
           </div>
         ),
@@ -54,24 +73,42 @@ const StudentEnrollmentTable = ({ handleOpenDeleteModal, data, page, totalCount,
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize: setTablePageSize,
-    state: { pageIndex, pageSize, globalFilter },
+    setPageSize: setTablePageSize, // Renaming setPageSize to avoid conflict
+    state: { pageIndex: tablePageIndex, pageSize: tablePageSize, globalFilter },
     setGlobalFilter,
   } = useTable(
-    { columns, data, initialState: { pageIndex: page, pageSize: 10 } }, // default pageSize of 10 if not provided
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0, pageSize: 10 },
+      manualPagination: true,
+      pageCount: Math.ceil(totalCount / pageSize),
+    },
     useGlobalFilter,
     usePagination
   );
 
-  // Update local pageSize if changed from the select dropdown
-  const handlePageSizeChange = (event) => {
-    const newSize = Number(event.target.value);
-    setPageSize(newSize);
-    setTablePageSize(newSize);
+  const handlePageSizeChange = (newPageSize) => {
+    const currentPage = tablePageIndex;
+    const newPageIndex = Math.floor(start / newPageSize);
+    const newStart = newPageIndex * newPageSize;
+    
+    setPageSize(newPageSize); 
+    setTablePageSize(newPageSize); 
+    setStart(newStart); 
+    setPageIndex(newPageIndex); 
+    gotoPage(newPageIndex); 
   };
 
-  const startRow = pageIndex * pageSize + 1;
-  const endRow = Math.min((pageIndex + 1) * pageSize, totalCount);
+  const handlePageChange = (newPageIndex) => {
+    const newStart = newPageIndex * tablePageSize;
+    setPageIndex(newPageIndex);  
+    setStart(newStart);  
+    gotoPage(newPageIndex);  
+  };
+
+  const startRow = tablePageIndex * tablePageSize + 1;
+  const endRow = Math.min((tablePageIndex + 1) * tablePageSize, totalCount);
 
   return (
     <div className="table-container">
@@ -81,14 +118,29 @@ const StudentEnrollmentTable = ({ handleOpenDeleteModal, data, page, totalCount,
           <select
             id="entries"
             name="entries"
-            value={pageSize || 10} // Use default value of 10 if pageSize is undefined
-            onChange={handlePageSizeChange}
+            value={pageSize}
+            onChange={(e) => handlePageSizeChange(Number(e.target.value))}
           >
-            {[10, 20, 30, 40, 50].map(size => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
+            {(() => {
+              const availableSizes = [10, 20, 30, 40, 50];
+              let filteredSizes = availableSizes.filter(
+                (size) => size <= totalCount
+              );
+
+              if (totalCount > Math.max(...filteredSizes) && totalCount < 50) {
+                filteredSizes.push(Math.ceil(totalCount / 10) * 10);
+              }
+
+              if (totalCount >= 50) {
+                filteredSizes = availableSizes;
+              }
+
+              return filteredSizes.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ));
+            })()}
           </select>
           <span>entries</span>
         </div>
@@ -99,29 +151,37 @@ const StudentEnrollmentTable = ({ handleOpenDeleteModal, data, page, totalCount,
             type="text"
             id="search"
             name="search"
-            value={globalFilter || ''}
-            onChange={(e) => setGlobalFilter(e.target.value)}
+            onChange={(e) => {
+              const query = e.target.value;
+              if (query.length >= 4) {
+                setSearch(query);
+                setStart(0);  
+                setPageIndex(0);  
+              } else {
+                setSearch("");
+              }
+            }}
           />
         </div>
       </div>
 
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {tablePage.map(row => {
+          {tablePage.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
               </tr>
             );
@@ -131,22 +191,24 @@ const StudentEnrollmentTable = ({ handleOpenDeleteModal, data, page, totalCount,
 
       <div className="pagination-container">
         <div className="footer-info">
-          <span>Showing {startRow} to {endRow} of {totalCount} entries</span>
+          <span>
+            Showing {startRow} to {endRow} of {totalCount} entries
+          </span>
         </div>
         <div className="pagination-controls">
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          <button onClick={() => handlePageChange(tablePageIndex - 1)} disabled={!canPreviousPage}>
             Previous
           </button>
           {pageOptions.map((pageNumber) => (
             <button
               key={pageNumber}
-              onClick={() =>  (pageNumber)}
-              className={pageIndex === pageNumber ? 'active' : ''}
+              onClick={() => handlePageChange(pageNumber)} 
+              className={tablePageIndex === pageNumber ? "active" : ""}
             >
-              {pageNumber + 1}
+              {pageNumber + 1}{" "}
             </button>
           ))}
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
+          <button onClick={() => handlePageChange(tablePageIndex + 1)} disabled={!canNextPage}>
             Next
           </button>
         </div>

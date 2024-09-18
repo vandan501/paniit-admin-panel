@@ -25,7 +25,7 @@ function App() {
           <Route path="student/enrollment" element={<Studentenrollment />} />
           <Route path="enrollment" element={<Selfenrollment />} />
           <Route path="batch" element={<Batchmanagement />} />
-          <Route path="batch/batch-details" element={<BatchDetails />} />
+          <Route path="batch/batch-details:id" element={<BatchDetails />} />
           <Route path="teacherpanel" element={<TeacherPanel />} />
           {/* <Route path="batch-details" element={<BatchDetails />} /> */}
         </Route>
